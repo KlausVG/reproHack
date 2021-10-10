@@ -1,17 +1,17 @@
-RSAid = Channel.create()
 
-
-RSAid.fromPath('RSAid.txt')
-RSAid.splitText(by : 10)
+RSAid= Channel.fromPath('RSAid.txt')
+RSAid.splitText(by : 1)
 RSAid.view()
 
 
 process downloadRSA{
 	container  'evolbioinfo/sratoolkit:v2.5.7'
 	input:
-	file sraid from RSAid
+	val sraid from RSAid
+	output:
+	file "${sraid}.sra" into fastq-file
 
 	"""
-	fastq-dump --gzip --split-files .!{sraid}.sra
+	fastq-dump --gzip --split-files .${sraid}.sra
 	"""
 }
