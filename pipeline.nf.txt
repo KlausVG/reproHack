@@ -8,7 +8,7 @@ RSAid.view()
 
 process downloadRSA{
 	container  'evolbioinfo/sratoolkit:v2.5.7'
-	input:
+	input: 
 	file sraid from RSAid
 
 	"""
