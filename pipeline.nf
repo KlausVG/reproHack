@@ -5,7 +5,7 @@ for( line : allLines ) {
     println line
 }
 
-process downloadRSA{
+process downloadSRA{
 	publishDir 'results', mode: 'link'
 
 	container 'pegi3s/sratoolkit'
@@ -43,7 +43,7 @@ process downloadGff{
 	"""
 }
 
-rocess indexGenome {
+process indexGenome {
 	container 'evolbioinfo/star:v2.7.6a'
 	input:
 	file chr from chromofagz.collect()
