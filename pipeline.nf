@@ -13,9 +13,9 @@ process downloadRSA{
 	val sraid from allLines
 
 	output:
-	tuple val(sraid), file("*_1.fq.gz"), file("*_2.fa.gz") into fastq
+	//tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq
 	"""
-	fasterq-dump ${sraid} // on dl les fastq associes, verifier que c bien pairés!
+	fasterq-dump ${sraid} --split-files 
 	"""
 }
 
@@ -27,7 +27,7 @@ process downloadChr{ // download les donnees du genome humain
 	val chromosome from chromo
 	
 	output:
-	file "${chromosome.fa.gz}" into chromofagz
+	///file "Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz" into chromofagz
 	"""
 	wget -o ${chromosome}.fa.gz ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
 	"""
@@ -43,7 +43,7 @@ process downloadGff{
 	"""
 }
 
-process indexGenome {
+rocess indexGenome {
 	container 'evolbioinfo/star:v2.7.6a'
 	input:
 	file chr from chromofagz.collect()
@@ -56,4 +56,3 @@ process indexGenome {
 	STAR --runThreadN 6 --runMode genomeGenerate  --genomeFastaFiles ref.fa
 	"""
 }
-// maybe bug si --genomeDir rep/ non mis
