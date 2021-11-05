@@ -69,32 +69,34 @@ process mapFastQ {
 	container 'evolbioinfo/star:v2.7.6a'
 	container 'evolbioinfo/samtools:v1.11'
 
-	input:
-	tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") from fastq.collect()
+	//input:
+
 
 	//output:
 	 
 
 	"""
-	$ STAR --outSAMstrandField intronMotif \
+	STAR --outSAMstrandField intronMotif \
 		--outFilterMismatchNmax 4 \
 		--outFilterMultimapNmax 10 \
 		--genomeDir ref \
-		--readFilesIn <(gunzip -c <${sraid}_1.fastq>) <(gunzip -c <${sraid}_2.fastq>) \
-		--runThreadN <Nb CPUS> \
+		--readFilesIn <(gunzip -c ${sraid}_1.fastq) <(gunzip -c ${sraid}_2.fastq) \
+		--runThreadN 6 \
 		--outSAMunmapped None \
 		--outSAMtype BAM SortedByCoordinate \
 		--outStd BAM_SortedByCoordinate \
 		--genomeLoad NoSharedMemory \
 		--limitBAMsortRAM <Memory in Bytes> \
 		> <sample id>.bam
-	$ samtools index *.bam
+	samtools index *.bam
 	"""
 }*/
 /*
 process countReads {
 	publishDir 'results', mode: 'link'
+	
 	container 'evolbioinfo/subread:v2.0.1'
+	
 	//input:
 	
 
@@ -102,6 +104,6 @@ process countReads {
 	
 
 	"""
-	$ featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts input.bam
+	featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts input.bam
 	"""
 }*/
