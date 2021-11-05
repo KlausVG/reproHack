@@ -1,4 +1,4 @@
-myFile = file('test.txt') // TODO, changer ca en 'RSAid.txt'
+myFile = file('test.txt') // TODO, changer ca en 'SRAid.txt'
 // on prend les noms des id rss a dl
 allLines = myFile.readLines()
 for(line : allLines) {
