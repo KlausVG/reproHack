@@ -17,7 +17,7 @@ process downloadSRA{
 	//tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq
 
 	"""
-	fasterq-dump ${sraid} --split-files 
+	fasterq-dump ${sraid} --threads ${task.cpus} --split-files 
 	"""
 }
 
