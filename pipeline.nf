@@ -14,10 +14,10 @@ process downloadSRA{
 	val sraid from allLines
 
 	output:
-	//tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq
+	tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq
 
 	"""
-	fasterq-dump ${sraid} --threads ${task.cpus} --split-files 
+	fasterq-dump ${sraid} --threads ${task.cpus} --split-files
 	"""
 }
 
@@ -30,7 +30,7 @@ process downloadChr{ // download les donnees du genome humain
 	val chromosome from chromo
 	
 	output:
-	//file "Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz" into chromofagz
+	file "Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz" into chromofagz
 
 	"""
 	wget -o ${chromosome}.fa.gz ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
