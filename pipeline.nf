@@ -1,10 +1,12 @@
+// Stockage des noms des ID RSS à télécharger
 myFile = file('test.txt') // TODO, changer ca en 'SRAid.txt'
-// on prend les noms des id rss a dl
+
 allLines = myFile.readLines()
 for(line : allLines) {
     println line
 }
 
+// Télécharge ???
 process downloadSRA{
 	publishDir 'results', mode: 'link'
 
@@ -14,16 +16,18 @@ process downloadSRA{
 	val sraid from allLines
 
 	output:
-	tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq
+	tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq // mettre sous forme de zip
 
 	"""
 	fasterq-dump ${sraid} --threads ${task.cpus} --split-files
 	"""
 }
 
-chromo = ["1", "2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","MT"]
+// Stockage des noms des chromosomes
+chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","MT"]
 
-process downloadChr{ // download les donnees du genome humain
+// Télécharge les données du génome humain
+process downloadChr{
 	publishDir 'results', mode: 'link'
 
 	input:
@@ -37,6 +41,7 @@ process downloadChr{ // download les donnees du genome humain
 	"""
 }
 
+// Télécharge les annotations des gènes humains
 process downloadGff{
 	publishDir 'results', mode: 'link'
 
@@ -48,6 +53,7 @@ process downloadGff{
 	"""
 }
 /*
+// Création de l'index du génome
 process indexGenome {
 	publishDir 'results', mode: 'link'
 	container 'evolbioinfo/star:v2.7.6a'
@@ -59,14 +65,15 @@ process indexGenome {
 
 	"""
 	gunzip *.fa.gz | gzip -c -> ref.fa
-	STAR --runThreadN 6 --runMode genomeGenerate  --genomeFastaFiles ref.fa
+	STAR --runThreadN 6 --runMode genomeGenerate --genomeFastaFiles ref.fa
 	"""
 }*/
 /*
+// Mapping des fichiers fastq (à séparer en deux)
 process mapFastQ {
 	publishDir 'results', mode: 'link'
 
-	container 'evolbioinfo/star:v2.7.6a'
+	container 'evolbioinfo/star:v2.7.6a' // 2 conteneurs en même temps pas possible, faire 2 process
 	container 'evolbioinfo/samtools:v1.11'
 
 	//input:
@@ -92,18 +99,24 @@ process mapFastQ {
 	"""
 }*/
 /*
+// Compte des reads
 process countReads {
 	publishDir 'results', mode: 'link'
 	
 	container 'evolbioinfo/subread:v2.0.1'
 	
-	//input:
+	//input: file (bam) from bam.collect() (avec bam output de mapfastq)
 	
 
 	//output:
 	
 
 	"""
-	featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts input.bam
+	featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts $bam // à mettre en input du process deseq
 	"""
+}*/
+/*
+//
+process statAnalysis {
+// en input mettre aussi association entre échantillon et son annotation --> expr diff entre muté et normal, ACP
 }*/
