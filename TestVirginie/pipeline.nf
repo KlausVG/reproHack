@@ -5,7 +5,7 @@ allLines = myFile.readLines()
 for(line : allLines) {
     println line
 }
-
+/*
 // Télécharge ???
 process downloadSRA{
 	publishDir 'results', mode: 'link'
@@ -16,12 +16,13 @@ process downloadSRA{
 	val sraid from allLines
 
 	output:
-	tuple val(sraid), file("*_1.fastq"), file("*_2.fastq") into fastq // mettre en zip
+	tuple val(sraid), file("*_1.fastq.gz"), file("*_2.fastq.gz") into fastq.gz
 
 	"""
 	fasterq-dump ${sraid} --threads ${task.cpus} --split-files
+	gzip ${sraid}_1.fastq ${sraid}_2.fastq
 	"""
-}
+}*/
 
 // Stockage des noms des chromosomes
 chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","MT"]
@@ -41,18 +42,6 @@ process downloadChr{
 	"""
 }
 
-// Télécharge les annotations des gènes humains
-process downloadGff{
-	publishDir 'results', mode: 'link'
-
-	output:
-	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gff
-	
-	"""
-	wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
-	"""
-}
-/*
 // Création de l'index du génome
 process indexGenome {
 	//publishDir 'results', mode: 'link'
@@ -64,12 +53,25 @@ process indexGenome {
 
 	//output:
 	
-
 	"""
+	mkdir ref
 	gunzip -c *.fa.gz > ref.fa
-	STAR --runThreadN 6 --runMode genomeGenerate --genomeFastaFiles ref.fa
+	STAR --runThreadN 8 --runMode genomeGenerate --genomeDir ref/ --genomeFastaFiles ref.fa
 	"""
-}*/
+}
+
+// Télécharge les annotations des gènes humains
+process downloadGff{
+	publishDir 'results', mode: 'link'
+
+	output:
+	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gff
+	
+	"""
+	wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
+	"""
+}
+
 /*
 // Mapping des fichiers fastq (à séparer en deux)
 process mapFastQ {
