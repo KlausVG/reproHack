@@ -11,8 +11,8 @@ process downloadFastQ{
 	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") into fastqgz
 
 	"""
-	fasterq-dump ${sraid} --threads ${task.cpus} --split-files
-	gzip ${sraid}_1.fastq ${sraid}_2.fastq
+	fasterq-dump --split-files ${sraid}
+	gzip *.fastq
 	"""
 }
 
@@ -25,21 +25,19 @@ process downloadChr{
 	val chromosome from chromo
 	
 	output:
-	file "Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz" into chromofagz
+	file "*.fa.gz" into chromofagz
 
 	"""
-	wget -o ${chromosome}.fa.gz ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
+	wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
 	"""
 }
-/*
+
 // Création de l'index du génome
 process indexGenome {
-	//publishDir 'results', mode: 'link'
-
 	container 'evolbioinfo/star:v2.7.6a'
 
 	input:
-	file chr from chromofagz.collect()
+	file "*.fa.gz" from chromofagz.collect()
 
 	//output:
 	
@@ -48,12 +46,10 @@ process indexGenome {
 	gunzip -c *.fa.gz > ref.fa
 	STAR --runThreadN 8 --runMode genomeGenerate --genomeDir ref/ --genomeFastaFiles ref.fa
 	"""
-}*/
+}
 
 // Télécharge les annotations des gènes humains
 process downloadGff{
-	publishDir 'results', mode: 'link'
-
 	output:
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gff
 	
