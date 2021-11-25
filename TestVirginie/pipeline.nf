@@ -11,7 +11,7 @@ process downloadFastQ{
 	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") into fastqgz
 
 	"""
-	fasterq-dump --split-files ${sraid}
+	fasterq-dump --threads 8 --split-files ${sraid}
 	gzip *.fastq
 	"""
 }
