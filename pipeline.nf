@@ -11,7 +11,7 @@ process downloadFastQ{
 	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") into fastqgz
 
 	"""
-	fasterq-dump --threads ${tack.cpus} --split-files ${sraid}
+	fasterq-dump --threads ${task.cpus} --split-files ${sraid}
 	gzip *.fastq
 	"""
 }
@@ -40,7 +40,7 @@ process indexGenome {
 	file "*.fa.gz" from chromofagz.collect()
 
 	output:
-    	path ref into genome_idx
+    	path ref into indexgenome
 
     	script:
     	"""
