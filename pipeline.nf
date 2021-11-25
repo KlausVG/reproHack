@@ -61,7 +61,7 @@ process downloadGtf{
 	"""
 }
 
-/*
+
 // Mapping des fichiers fastq
 process mapFastQ {
 	container 'evolbioinfo/star:v2.7.6a'
@@ -122,7 +122,7 @@ process countReads {
 	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam // à mettre en input du process deseq
 	"""
 }
-
+/*
 //
 process statAnalysis {
 // en input mettre aussi association entre échantillon et son annotation --> expr diff entre muté et normal, ACP
