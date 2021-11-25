@@ -1,4 +1,4 @@
-// Stockage des ID RSA
+// Stockage des ID SRA
 myFile = file('test.txt') // TODO, changer en 'SRAid.txt'
 allLines = myFile.readLines()
 
