@@ -39,7 +39,8 @@ process indexGenome {
 	input:
 	file "*.fa.gz" from chromofagz.collect()
 
-	//output:
+	output:
+	path ref into indexgenome
 	
 	"""
 	mkdir ref
@@ -49,9 +50,9 @@ process indexGenome {
 }
 
 // Télécharge les annotations des gènes humains
-process downloadGff{
+process downloadGtf{
 	output:
-	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gff
+	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gtf
 	
 	"""
 	wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
@@ -59,18 +60,16 @@ process downloadGff{
 }
 
 /*
-// Mapping des fichiers fastq (à séparer en deux)
+// Mapping des fichiers fastq
 process mapFastQ {
-	publishDir 'results', mode: 'link'
+	container 'evolbioinfo/star:v2.7.6a'
 
-	container 'evolbioinfo/star:v2.7.6a' // 2 conteneurs en même temps pas possible, faire 2 process
-	container 'evolbioinfo/samtools:v1.11'
+	input:
+	path ref from indexgenome
+    	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") from fastqgz
 
-	//input:
-
-
-	//output:
-	 
+	output:
+	file "${sraid}.bam" into bam
 
 	"""
 	STAR --outSAMstrandField intronMotif \
@@ -78,34 +77,50 @@ process mapFastQ {
 		--outFilterMultimapNmax 10 \
 		--genomeDir ref \
 		--readFilesIn <(gunzip -c ${sraid}_1.fastq) <(gunzip -c ${sraid}_2.fastq) \
-		--runThreadN 6 \
+		--runThreadN 8 \
 		--outSAMunmapped None \
 		--outSAMtype BAM SortedByCoordinate \
 		--outStd BAM_SortedByCoordinate \
 		--genomeLoad NoSharedMemory \
-		--limitBAMsortRAM <Memory in Bytes> \
-		> <sample id>.bam
+		--limitBAMsortRAM 30000000000 \
+		> ${sraid}.bam
+	"""
+}
+
+// Indexation des .bam
+process indexBamFiles {
+	publishDir 'results', mode: 'link'
+
+	container 'evolbioinfo/samtools:v1.11'
+
+	input:
+	file bam from bam
+
+	output:
+	tuple file("${bam}.bai"), file("${bam}") into bamindex
+	 
+	"""
 	samtools index *.bam
 	"""
-}*/
-/*
-// Compte des reads
+}
+
+// Compte les reads
 process countReads {
-	publishDir 'results', mode: 'link'
-	
 	container 'evolbioinfo/subread:v2.0.1'
 	
-	//input: file (bam) from bam.collect() (avec bam output de mapfastq)
+	input:
+	file "*.bam" from bamindex.collect()
+	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" from gtf
 	
-
 	//output:
 	
 
 	"""
-	featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts $bam // à mettre en input du process deseq
+	gunzip Homo_sapiens.GRCh38.101.chr.gtf.gz
+	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam // à mettre en input du process deseq
 	"""
-}*/
-/*
+}
+
 //
 process statAnalysis {
 // en input mettre aussi association entre échantillon et son annotation --> expr diff entre muté et normal, ACP
