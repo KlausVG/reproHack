@@ -1,55 +1,43 @@
-// Stockage des noms des ID RSS à télécharger
-myFile = file('test.txt') // TODO, changer ca en 'SRAid.txt'
-
+// Stockage des ID RSA
+myFile = file('test.txt') // TODO, changer en 'SRAid.txt'
 allLines = myFile.readLines()
-for(line : allLines) {
-    println line
-}
-/*
-// Télécharge ???
-process downloadSRA{
-	publishDir 'results', mode: 'link'
 
-	container 'pegi3s/sratoolkit'
-
+// Télécharge les fichiers fastq
+process downloadFastQ{
 	input:
 	val sraid from allLines
 
 	output:
-	tuple val(sraid), file("*_1.fastq.gz"), file("*_2.fastq.gz") into fastq.gz
+	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") into fastqgz
 
 	"""
-	fasterq-dump ${sraid} --threads ${task.cpus} --split-files
-	gzip ${sraid}_1.fastq ${sraid}_2.fastq
+	fasterq-dump --split-files ${sraid}
+	gzip *.fastq
 	"""
-}*/
+}
 
 // Stockage des noms des chromosomes
 chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","MT"]
 
 // Télécharge les données du génome humain
 process downloadChr{
-	publishDir 'results', mode: 'link'
-
 	input:
 	val chromosome from chromo
 	
 	output:
-	file "Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz" into chromofagz
+	file "*.fa.gz" into chromofagz
 
 	"""
-	wget -o ${chromosome}.fa.gz ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
+	wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.${chromosome}.fa.gz
 	"""
 }
 
 // Création de l'index du génome
 process indexGenome {
-	//publishDir 'results', mode: 'link'
-
 	container 'evolbioinfo/star:v2.7.6a'
 
 	input:
-	file chr from chromofagz.collect()
+	file "*.fa.gz" from chromofagz.collect()
 
 	//output:
 	
@@ -62,8 +50,6 @@ process indexGenome {
 
 // Télécharge les annotations des gènes humains
 process downloadGff{
-	publishDir 'results', mode: 'link'
-
 	output:
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gff
 	
