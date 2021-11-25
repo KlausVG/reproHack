@@ -23,7 +23,7 @@ chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"
 process downloadChr{
 	input:
 	val chromosome from chromo
-	
+
 	output:
 	file "*.fa.gz" into chromofagz
 
@@ -40,20 +40,22 @@ process indexGenome {
 	file "*.fa.gz" from chromofagz.collect()
 
 	output:
-	path ref into indexgenome
-	
-	"""
-	mkdir ref
-	gunzip -c *.fa.gz > ref.fa
-	STAR --runThreadN 8 --runMode genomeGenerate --genomeDir ref/ --genomeFastaFiles ref.fa
-	"""
+    path ref into genome_idx
+
+    script:
+    """
+    gunzip -c *.fa.gz > ref.fa
+    mkdir ref
+    STAR --runThreadN ${task.cpus} --runMode genomeGenerate --genomeDir ref/ --genomeFastaFiles ref.fa
+    """
 }
+
 
 // Télécharge les annotations des gènes humains
 process downloadGtf{
 	output:
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gtf
-	
+
 	"""
 	wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
 	"""
@@ -77,7 +79,7 @@ process mapFastQ {
 		--outFilterMultimapNmax 10 \
 		--genomeDir ref \
 		--readFilesIn <(gunzip -c ${sraid}_1.fastq) <(gunzip -c ${sraid}_2.fastq) \
-		--runThreadN 8 \
+		--runThreadN ${task.cpus} \
 		--outSAMunmapped None \
 		--outSAMtype BAM SortedByCoordinate \
 		--outStd BAM_SortedByCoordinate \
@@ -98,7 +100,7 @@ process indexBamFiles {
 
 	output:
 	tuple file("${bam}.bai"), file("${bam}") into bamindex
-	 
+
 	"""
 	samtools index *.bam
 	"""
@@ -107,13 +109,13 @@ process indexBamFiles {
 // Compte les reads
 process countReads {
 	container 'evolbioinfo/subread:v2.0.1'
-	
+
 	input:
 	file "*.bam" from bamindex.collect()
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" from gtf
-	
+
 	//output:
-	
+
 
 	"""
 	gunzip Homo_sapiens.GRCh38.101.chr.gtf.gz
