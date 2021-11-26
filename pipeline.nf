@@ -120,8 +120,7 @@ process countReads {
 
 
 	"""
-	gunzip -c Homo_sapiens.GRCh38.101.chr.gtf.gz
-	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam
+	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf.gz -o output.counts $bam
 	"""
 }
 /*
