@@ -50,7 +50,6 @@ process indexGenome {
     	"""
 }
 
-
 // Télécharge les annotations des gènes humains
 process downloadGtf{
 	output:
@@ -61,14 +60,13 @@ process downloadGtf{
 	"""
 }
 
-
 // Mapping des fichiers fastq
 process mapFastQ {
 	container 'evolbioinfo/star:v2.7.6a'
 
 	input:
 	path ref from indexgenome
-    	tuple val("${sraid}"), file("${sraid}_1.fastq.gz"), file("${sraid}_2.fastq.gz") from fastqgz
+    	tuple val(sraid), file("file1.fastq.gz"), file("file2.fastq.gz") from fastqgz
 
 	output:
 	file "${sraid}.bam" into bam
@@ -78,17 +76,17 @@ process mapFastQ {
 		--outFilterMismatchNmax 4 \
 		--outFilterMultimapNmax 10 \
 		--genomeDir ref \
-		--readFilesIn <(gunzip -c ${sraid}_1.fastq) <(gunzip -c ${sraid}_2.fastq) \
+		--readFilesIn <(gunzip -c file1.fastq.gz) <(gunzip -c file2.fastq.gz) \
 		--runThreadN ${task.cpus} \
 		--outSAMunmapped None \
 		--outSAMtype BAM SortedByCoordinate \
 		--outStd BAM_SortedByCoordinate \
 		--genomeLoad NoSharedMemory \
-		--limitBAMsortRAM 30000000000 \
+		--limitBAMsortRAM ${task.memory.toBytes()} \
 		> ${sraid}.bam
 	"""
 }
-
+/*
 // Indexation des .bam
 process indexBamFiles {
 	publishDir 'results', mode: 'link'
@@ -121,7 +119,7 @@ process countReads {
 	gunzip Homo_sapiens.GRCh38.101.chr.gtf.gz
 	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam // à mettre en input du process deseq
 	"""
-}
+}*/
 /*
 //
 process statAnalysis {
