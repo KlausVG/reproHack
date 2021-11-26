@@ -4,6 +4,8 @@ allLines = myFile.readLines()
 
 // Télécharge les fichiers fastq
 process downloadFastQ{
+	publishDir 'results/fastq', mode: 'symlink'
+	
 	input:
 	val sraid from allLines
 
@@ -21,6 +23,8 @@ chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"
 
 // Télécharge les données du génome humain
 process downloadChr{
+	publishDir 'results/chrom', mode: 'symlink'
+
 	input:
 	val chromosome from chromo
 
@@ -34,7 +38,7 @@ process downloadChr{
 
 // Création de l'index du génome
 process indexGenome {
-	container 'evolbioinfo/star:v2.7.6a'
+	publishDir 'results/genome_index', mode: 'symlink'
 
 	input:
 	file "*.fa.gz" from chromofagz.collect()
@@ -52,6 +56,8 @@ process indexGenome {
 
 // Télécharge les annotations des gènes humains
 process downloadGtf{
+	publishDir 'results/gtf', mode: 'symlink'
+
 	output:
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gtf
 
@@ -62,14 +68,14 @@ process downloadGtf{
 
 // Mapping des fichiers fastq
 process mapFastQ {
-	container 'evolbioinfo/star:v2.7.6a'
+	publishDir 'results/mapping', mode: 'symlink'
 
 	input:
 	path ref from indexgenome
     	tuple val(sraid), file("file1.fastq.gz"), file("file2.fastq.gz") from fastqgz
 
 	output:
-	file "${sraid}.bam" into bam
+	file "${sraid}.bam" into bam_indexBamFiles, bam_countReads
 
 	"""
 	STAR --outSAMstrandField intronMotif \
@@ -86,15 +92,13 @@ process mapFastQ {
 		> ${sraid}.bam
 	"""
 }
-/*
+
 // Indexation des .bam
 process indexBamFiles {
-	publishDir 'results', mode: 'link'
-
-	container 'evolbioinfo/samtools:v1.11'
+	publishDir 'results/bam_index', mode: 'symlink'
 
 	input:
-	file bam from bam
+	file bam from bam_indexBamFiles
 
 	output:
 	tuple file("${bam}.bai"), file("${bam}") into bamindex
@@ -106,10 +110,10 @@ process indexBamFiles {
 
 // Compte les reads
 process countReads {
-	container 'evolbioinfo/subread:v2.0.1'
+	publishDir 'results/counts', mode: 'symlink'
 
 	input:
-	file "*.bam" from bamindex.collect()
+	file bam from bam_countReads.collect()
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" from gtf
 
 	//output:
@@ -117,11 +121,12 @@ process countReads {
 
 	"""
 	gunzip Homo_sapiens.GRCh38.101.chr.gtf.gz
-	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam // à mettre en input du process deseq
+	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf -o output.counts $bam
 	"""
-}*/
+}
 /*
 //
 process statAnalysis {
+// output countReads à mettre en input
 // en input mettre aussi association entre échantillon et son annotation --> expr diff entre muté et normal, ACP
 }*/
