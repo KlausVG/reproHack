@@ -116,16 +116,26 @@ process countReads {
 	file bam from bam_countReads.collect()
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" from gtf
 
-	//output:
-
+	output:
+	file "output.counts" into counts
+	file "output.counts.summary" into summary
 
 	"""
 	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf.gz -o output.counts $bam
 	"""
 }
 /*
-//
+// Lance l'analyse statistique R
 process statAnalysis {
-// output countReads à mettre en input
-// en input mettre aussi association entre échantillon et son annotation --> expr diff entre muté et normal, ACP
+	publishDir 'results/analyseR', mode: 'symlink'
+
+	input:
+	file "output.counts" from counts
+
+	//output:
+	
+
+	"""
+	#!/usr/bin/env.DESEQ2script.R
+	"""
 }*/
