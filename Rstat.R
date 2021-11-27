@@ -12,7 +12,7 @@ library(EnhancedVolcano)
 
 #Clean the workspace
 rm(list = ls())
-setwd("C:/Projects/Reprohack/reproHack")
+dev.off()
 
 ###we construct a gene count table and a metadata table
 genecount <- read.table('output.counts', skip = 1, header =TRUE, sep ='\t')
@@ -30,10 +30,12 @@ genecount <- genecount[,-c(1,length(genecount)-1)]
 ###PCA
 
 #we run the PCA
+pdf("variabes.pdf")
 resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = TRUE)
-#save for output?
+dev.off()
+pdf("individuals.pdf")
 fviz_pca_ind (resPCA,label="none",habillage= as.factor(genecount$Group), addEllipses = T, pointsize=5) + theme( axis.title = element_text(size = 15),axis.text = element_text(size = 15))
-#save for output?
+dev.off()
 
 ###DESeq
 
@@ -47,16 +49,17 @@ de <- DESeqDataSetFromMatrix(genecount, metadata, design= ~Group )
 de <- DESeq(de)
 result <- results(de, alpha = 0.05, lfcThreshold = 1, independentFiltering= F)
 summary(result)
-res <- as.data.frame(result)
+res1 <- as.data.frame(result)
 #save for output?
 
 #we filter the results
-res <- subset(res, res$log2FoldChange > 1 | res$log2FoldChange <(-1))
+res <- subset(res1, res1$log2FoldChange > 1 | res1$log2FoldChange <(-1))
 res <- subset(res, res$padj < 0.1)
 res <- na.omit(res)
 
 #graphic representation
+pdf("volcanoplot.pdf")
 EnhancedVolcano(result,lab = rownames(result),
                 x = 'log2FoldChange',
                 y = 'pvalue')
-#save for output?
+dev.off()
