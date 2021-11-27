@@ -127,15 +127,21 @@ process countReads {
 /*
 // Lance l'analyse statistique R
 process statAnalysis {
-	publishDir 'results/analyseR'
+        publishDir 'results/analyseR'
 
-	input:
-	file "output.counts" from counts
+        input:
+        file "output.counts" from counts
+        file "typedata.csv"
 
-	//output:
-	
+        output:
+        file "variabes.pdf" into analyseR
+        file "individuals.pdf" into analyseR
+        file "volcanoplot.pdf" into analyseR
+        file "restot.csv" into analyseR
+        file "res.csv" into analyseR
 
-	"""
-	#!/usr/bin/env.Rstat.R
-	"""
+
+        """
+        #!/usr/bin/env.Rstat.R
+        """
 }*/
