@@ -50,12 +50,13 @@ de <- DESeq(de)
 result <- results(de, alpha = 0.05, lfcThreshold = 1, independentFiltering= F)
 summary(result)
 res1 <- as.data.frame(result)
-#save for output?
+write.csv(res1, "restot.csv")
 
 #we filter the results
 res <- subset(res1, res1$log2FoldChange > 1 | res1$log2FoldChange <(-1))
 res <- subset(res, res$padj < 0.1)
 res <- na.omit(res)
+write.csv(res, "res.csv")
 
 #graphic representation
 pdf("volcanoplot.pdf")
