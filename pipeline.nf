@@ -136,6 +136,6 @@ process statAnalysis {
 	
 
 	"""
-	#!/usr/bin/env.DESEQ2script.R
+	#!/usr/bin/env.Rstat.R
 	"""
 }*/
