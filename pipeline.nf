@@ -4,7 +4,7 @@ allLines = myFile.readLines()
 
 // Télécharge les fichiers fastq
 process downloadFastQ{
-	publishDir 'results/fastq', mode: 'symlink'
+	publishDir 'results/fastq'
 	
 	input:
 	val sraid from allLines
@@ -23,7 +23,7 @@ chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"
 
 // Télécharge les données du génome humain
 process downloadChr{
-	publishDir 'results/chrom', mode: 'symlink'
+	publishDir 'results/chrom'
 
 	input:
 	val chromosome from chromo
@@ -38,7 +38,7 @@ process downloadChr{
 
 // Création de l'index du génome
 process indexGenome {
-	publishDir 'results/genome_index', mode: 'symlink'
+	publishDir 'results/genome_index'
 
 	input:
 	file "*.fa.gz" from chromofagz.collect()
@@ -56,7 +56,7 @@ process indexGenome {
 
 // Télécharge les annotations des gènes humains
 process downloadGtf{
-	publishDir 'results/gtf', mode: 'symlink'
+	publishDir 'results/gtf'
 
 	output:
 	file "Homo_sapiens.GRCh38.101.chr.gtf.gz" into gtf
@@ -68,7 +68,7 @@ process downloadGtf{
 
 // Mapping des fichiers fastq
 process mapFastQ {
-	publishDir 'results/mapping', mode: 'symlink'
+	publishDir 'results/mapping'
 
 	input:
 	path ref from indexgenome
@@ -95,7 +95,7 @@ process mapFastQ {
 
 // Indexation des .bam
 process indexBamFiles {
-	publishDir 'results/bam_index', mode: 'symlink'
+	publishDir 'results/bam_index'
 
 	input:
 	file bam from bam_indexBamFiles
@@ -110,7 +110,7 @@ process indexBamFiles {
 
 // Compte les reads
 process countReads {
-	publishDir 'results/counts', mode: 'symlink'
+	publishDir 'results/counts'
 
 	input:
 	file bam from bam_countReads.collect()
@@ -127,7 +127,7 @@ process countReads {
 /*
 // Lance l'analyse statistique R
 process statAnalysis {
-	publishDir 'results/analyseR', mode: 'symlink'
+	publishDir 'results/analyseR'
 
 	input:
 	file "output.counts" from counts
