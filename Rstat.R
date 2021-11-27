@@ -1,0 +1,62 @@
+#we download the packages
+list.of.packages <- c("FactoMineR","factoextra")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)){
+   install.packages(new.packages)
+}
+
+library(DESeq2)
+library(FactoMineR)
+library(factoextra)
+library(EnhancedVolcano)
+
+#Clean the workspace
+rm(list = ls())
+setwd("C:/Projects/Reprohack/reproHack")
+
+###we construct a gene count table and a metadata table
+genecount <- read.table('output.counts', skip = 1, header =TRUE, sep ='\t')
+metadata <- read.table('typedata.csv', header =F, sep =';')
+names(metadata) <- c( "indiv","Group")
+metadata$indiv <- paste(metadata$indiv, "bam", sep = ".")
+rownames(genecount) <- genecount$Geneid
+rownames(metadata) <- metadata$indiv
+genecount <- genecount[,-(1:6)]
+genecount <- as.data.frame(t(genecount))
+genecount <- merge(genecount, metadata, by="row.names")
+rownames(genecount) <- genecount[,1]
+genecount <- genecount[,-c(1,length(genecount)-1)]
+
+###PCA
+
+#we run the PCA
+resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = TRUE)
+#save for output?
+fviz_pca_ind (resPCA,label="none",habillage= as.factor(genecount$Group), addEllipses = T, pointsize=5) + theme( axis.title = element_text(size = 15),axis.text = element_text(size = 15))
+#save for output?
+
+###DESeq
+
+#we adjust the genecount table
+genecount <- genecount[ , ! colnames(genecount) %in% c("Group")]
+genecount <- as.data.frame(t(genecount))
+
+
+#we run DESeq2
+de <- DESeqDataSetFromMatrix(genecount, metadata, design= ~Group )
+de <- DESeq(de)
+result <- results(de, alpha = 0.05, lfcThreshold = 1, independentFiltering= F)
+summary(result)
+res <- as.data.frame(result)
+#save for output?
+
+#we filter the results
+res <- subset(res, res$log2FoldChange > 1 | res$log2FoldChange <(-1))
+res <- subset(res, res$padj < 0.1)
+res <- na.omit(res)
+
+#graphic representation
+EnhancedVolcano(result,lab = rownames(result),
+                x = 'log2FoldChange',
+                y = 'pvalue')
+#save for output?
