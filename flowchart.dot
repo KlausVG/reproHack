@@ -1,0 +1,54 @@
+digraph "flowchart" {
+p0 [shape=point,label="",fixedsize=true,width=0.1];
+p1 [label="downloadFastQ"];
+p0 -> p1 [label="sraid"];
+
+p1 [label="downloadFastQ"];
+p7 [label="mapFastQ"];
+p1 -> p7 [label="fastqgz"];
+
+p2 [shape=point,label="",fixedsize=true,width=0.1];
+p3 [label="downloadChr"];
+p2 -> p3 [label="chromosome"];
+
+p3 [label="downloadChr"];
+p4 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="collect"];
+p3 -> p4 [label="chromofagz"];
+
+p4 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="collect"];
+p5 [label="indexGenome"];
+p4 -> p5;
+
+p5 [label="indexGenome"];
+p7 [label="mapFastQ"];
+p5 -> p7 [label="indexgenome"];
+
+p6 [label="downloadGtf"];
+p11 [label="countReads"];
+p6 -> p11 [label="gtf"];
+
+p7 [label="mapFastQ"];
+p8 [label="indexBamFiles"];
+p7 -> p8 [label="bam_indexBamFiles"];
+
+p7 [label="mapFastQ"];
+p10 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="collect"];
+p7 -> p10 [label="bam_countReads"];
+
+p8 [label="indexBamFiles"];
+p9 [shape=point];
+p8 -> p9 [label="bamindex"];
+
+p10 [shape=circle,label="",fixedsize=true,width=0.1,xlabel="collect"];
+p11 [label="countReads"];
+p10 -> p11;
+
+p11 [label="countReads"];
+p13 [shape=point];
+p11 -> p13 [label="counts"];
+
+p11 [label="countReads"];
+p12 [shape=point];
+p11 -> p12 [label="summary"];
+
+}

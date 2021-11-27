@@ -1,5 +1,5 @@
 // Stockage des ID SRA
-myFile = file('test.txt') // TODO, changer en 'SRAid.txt'
+myFile = file('SRAid.txt')
 allLines = myFile.readLines()
 
 // Télécharge les fichiers fastq
