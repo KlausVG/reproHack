@@ -53,7 +53,7 @@ genecount <- as.data.frame(t(genecount))
 #we run DESeq2
 de <- DESeqDataSetFromMatrix(genecount, metadata, design= ~Group )
 de <- DESeq(de)
-result <- results(de, alpha = 0.05, lfcThreshold = 1, independentFiltering= F)
+result <- results(de, alpha = 0.05, lfcThreshold = 1)
 summary(result)
 res1 <- as.data.frame(result)
 write.csv(res1, "restot.csv")

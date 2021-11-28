@@ -1,11 +1,11 @@
-# Rendu pour reproHackaton
-## Membres du Groupe
-- Klaus von Grafenstein (process downloadFastQ, downloadChr, donwloadGtf, écriture README)
-- Virginie Noël (process mapFastQ, indexBamFiles, countReads indexGenome)
-- Arnaud Maupas (process AnalysStat et script R)
-## Objectif du Hackaton
-Le but est reproduire les études de <a href="https://www.nature.com/articles/ng.2523" target="_blank">Harbour, Roberson et al. 2013</a> et <a href="https://pubmed.ncbi.nlm.nih.gov/23861464/" target="_blank">Furney , Pedersen et al 2013</a> 
-portant sur des données RNA-seq d'individus avec cancers uvulaires, en regardant si les individus ayant la mutation  SF3B1 et ce cancer ont des gènes différemment exprimes de ceux ayant ce cancer aussi, mais pas la mutation, à l'aide d'un workflow réproductible.
+# Rendu pour reproHackathon
+## Membres du groupe
+- Klaus von Grafenstein (process downloadFastQ, downloadChr, downloadGtf, écriture README)
+- Virginie Noël (process indexGenome, mapFastQ, indexBamFiles, countReads)
+- Arnaud Maupas (process statAnalysis et script R)
+## Objectif du Hackathon
+Le but est reproduire les études de <a href="https://www.nature.com/articles/ng.2523" target="_blank">Harbour, Roberson et al. 2013</a> et <a href="https://pubmed.ncbi.nlm.nih.gov/23861464/" target="_blank">Furney, Pedersen et al 2013</a> 
+portant sur des données RNA-Seq d'individus avec un cancer oculaire, en regardant si les individus ayant la mutation SF3B1 ont des gènes différemment exprimés de ceux ayant également ce cancer, mais pas la mutation, cela à l'aide d'un workflow reproductible.
 ## Workflow
 ![alt text](https://github.com/AnalystCat/reproHack/blob/main/flowchart.png?raw=true)
 ## Outils utilisés
@@ -24,19 +24,18 @@ Conteneur pegi3s/sratoolkit : version 2.10.0
   Conteneur evolbioinfo/samtools:v1.11 : version 1.11
 - <a href= "https://hub.docker.com/r/evolbioinfo/subread:v2.0.1"> Subread</a>
   Conteneur evolbioinfo/subread:v2.0.1 : version 2.0.1
-- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2:1.28.1"> R</a>
-  Conteneur evolbioinfo/deseq2:1.28.1 : R version 4.0.2
+- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2:v1.28.1"> R</a>
+  Conteneur evolbioinfo/deseq2:v1.28.1 : R version 4.0.2
 - <a href= "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"> Package R DESeq2  </a> version 1.28.1
 - <a href= "http://factominer.free.fr/index_fr.html"> Package R FactoMineR </a> version 2.4
 - <a href= "https://cran.r-project.org/web/packages/factoextra/index.html"> Package R factoextra </a>version 1.0.7
 
 
 ## Lancement du workflow
-Pour pouvoir lancer le workflow, assurez vu que votre machine possede Newtflow et est au minimun 16 coeurs, 64Go de mémoire vive et 400Go de stockage.
-Une fois assurée que votre envriroment de travail est bon, vous pouvez lancer le worflow en vous placant dans le dossier git et en faisant la commande :
+Pour pouvoir lancer le workflow, assurez-vous que votre machine possède Nextflow et ait au minimum 16 coeurs, 64Go de mémoire vive et 400Go de stockage.
+Après avoir vérifié que votre environnement de travail est correcy, vous pouvez lancer le workflow en vous placant dans le dossier git et en faisant la commande :
 ``` 
 nextflow run pipeline.nf 
 ```
-L'utilisation des options ```-q``` et de ```-bg``` permettent respectivement de éviter que la console affiche les messages des étapes d'excution du nextflow et de lancer an arriere-plan. 
-Les differents résultats de l'analyse stastiques devrait se trouver dans le dossier results une fois l'excution terminé.
-
+L'utilisation des options ```-q``` et ```-bg``` permettent respectivement d'éviter que la console affiche les messages des étapes d'exécution du workflow et de le lancer en arrière-plan. 
+Les différents résultats de l'analyse statistique se trouvent dans le dossier results une fois l'exécution terminée.
