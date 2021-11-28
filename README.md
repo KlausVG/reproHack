@@ -18,17 +18,18 @@ portant sur des données RNA-Seq d'individus avec un cancer oculaire, en regarda
   Version 2.25.1 
 - <a href= "https://hub.docker.com/r/pegi3s/sratoolkit"> SRA Toolkit</a>
 Conteneur pegi3s/sratoolkit : version 2.10.0
--  <a href= "https://hub.docker.com/r/evolbioinfo/star:v2.7.6a"> STAR</a>
+-  <a href= "https://hub.docker.com/r/evolbioinfo/star"> STAR</a>
   Conteneur evolbioinfo/star:v2.7.6a : version 2.7.6a 
-- <a href= "https://hub.docker.com/r/evolbioinfo/samtools:v1.11"> SAMtools</a>
+- <a href= "https://hub.docker.com/r/evolbioinfo/samtools"> SAMtools</a>
   Conteneur evolbioinfo/samtools:v1.11 : version 1.11
-- <a href= "https://hub.docker.com/r/evolbioinfo/subread:v2.0.1"> Subread</a>
+- <a href= "https://hub.docker.com/r/evolbioinfo/subread"> Subread</a>
   Conteneur evolbioinfo/subread:v2.0.1 : version 2.0.1
-- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2:v1.28.1"> R</a>
+- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2"> R</a>
   Conteneur evolbioinfo/deseq2:v1.28.1 : R version 4.0.2
 - <a href= "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"> Package R DESeq2  </a> version 1.28.1
 - <a href= "http://factominer.free.fr/index_fr.html"> Package R FactoMineR </a> version 2.4
 - <a href= "https://cran.r-project.org/web/packages/factoextra/index.html"> Package R factoextra </a>version 1.0.7
+- <a href= "https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html"> Package R EnhancedVolcano </a>version 1.12.0
 
 
 ## Lancement du workflow
