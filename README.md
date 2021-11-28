@@ -37,5 +37,5 @@ Après avoir vérifié que votre environnement de travail est correcy, vous pouv
 ``` 
 nextflow run pipeline.nf 
 ```
-L'utilisation des options ```-q``` et de ```-bg``` permettent respectivement d'éviter que la console affiche les messages des étapes d'exécution du workflow et de le lancer en arrière-plan. 
+L'utilisation des options ```-q``` et ```-bg``` permettent respectivement d'éviter que la console affiche les messages des étapes d'exécution du workflow et de le lancer en arrière-plan. 
 Les différents résultats de l'analyse statistique se trouvent dans le dossier results une fois l'exécution terminée.
