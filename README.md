@@ -1,9 +1,9 @@
-# Rendu pour reproHackaton
-## Membres du Groupe
+# Rendu pour reproHackathon
+## Membres du groupe
 - Klaus von Grafenstein (process downloadFastQ, downloadChr, donwloadGtf, écriture README)
 - Virginie Noël (process indexGenome, mapFastQ, indexBamFiles, countReads)
 - Arnaud Maupas (process statAnalysis et script R)
-## Objectif du Hackaton
+## Objectif du Hackathon
 Le but est reproduire les études de <a href="https://www.nature.com/articles/ng.2523" target="_blank">Harbour, Roberson et al. 2013</a> et <a href="https://pubmed.ncbi.nlm.nih.gov/23861464/" target="_blank">Furney, Pedersen et al 2013</a> 
 portant sur des données RNA-Seq d'individus avec un cancer oculaire, en regardant si les individus ayant la mutation SF3B1 ont des gènes différemment exprimés de ceux ayant également ce cancer, mais pas la mutation, cela à l'aide d'un workflow reproductible.
 ## Workflow
