@@ -24,7 +24,7 @@ Conteneur pegi3s/sratoolkit : version 2.10.0
   Conteneur evolbioinfo/samtools:v1.11 : version 1.11
 - <a href= "https://hub.docker.com/r/evolbioinfo/subread:v2.0.1"> Subread</a>
   Conteneur evolbioinfo/subread:v2.0.1 : version 2.0.1
-- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2:v1.28.1"> R</a>
+- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2"> R</a>
   Conteneur evolbioinfo/deseq2:v1.28.1 : R version 4.0.2
 - <a href= "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"> Package R DESeq2  </a> version 1.28.1
 - <a href= "http://factominer.free.fr/index_fr.html"> Package R FactoMineR </a> version 2.4
