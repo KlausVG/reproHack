@@ -124,24 +124,25 @@ process countReads {
 	featureCounts -T 8 -t gene -g gene_id -s 0 -a Homo_sapiens.GRCh38.101.chr.gtf.gz -o output.counts $bam
 	"""
 }
-/*
-// Lance l'analyse statistique R et donne en sortie des csv de resultat et une acp et volcanoplot des genes differement exprimés
+
+typedata = Channel.fromPath('typedata.csv')
+
+// Lance l'analyse statistique R et donne en sortie des csv de résultat et une ACP et volcanoplot des gènes différentiellement exprimés
 process statAnalysis {
         publishDir 'results/analyseR'
 
         input:
-        file "output.counts" from counts
-        file "typedata.csv"
+        file counts from counts
+        file typedata from typedata
 
         output:
-        file "variabes.pdf" into analyseR
-        file "individuals.pdf" into analyseR
-        file "volcanoplot.pdf" into analyseR
-        file "restot.csv" into analyseR
-        file "res.csv" into analyseR
-
+        file "variables.pdf" into variables
+        file "individuals.pdf" into individuals
+        file "volcanoplot.pdf" into volcanoplot
+        file "restot.csv" into restot
+        file "res.csv" into res
 
         """
-        #!/usr/bin/env.Rstat.R
+        Rstat.R ${counts} ${typedata}
         """
-}*/
+}
