@@ -2,7 +2,8 @@
 myFile = file('SRAid.txt')
 allLines = myFile.readLines()
 
-// Télécharge les fichiers fastq
+// Télécharge les fichiers fastq qui correspondent aux id SRA
+// Compression de ces fichiers pour qu'ils occupent moins de place sur la machine
 process downloadFastQ{
 	publishDir 'results/fastq'
 
@@ -21,7 +22,7 @@ process downloadFastQ{
 // Stockage des noms des chromosomes
 chromo = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","MT"]
 
-// Télécharge les données du génome humain
+// Télécharge les données du génome humain pour les chromosomes qu'on souhaite
 process downloadChr{
 	publishDir 'results/chrom'
 
@@ -36,7 +37,7 @@ process downloadChr{
 	"""
 }
 
-// Création de l'index du génome
+// Création de l'index sur le génome de réference précedement telecharger
 process indexGenome {
 	publishDir 'results/genome_index'
 
@@ -66,7 +67,7 @@ process downloadGtf{
 	"""
 }
 
-// Mapping des fichiers fastq
+// Allignement des données rna-seq sur le génome de réference annoté
 process mapFastQ {
 	publishDir 'results/mapping'
 
@@ -93,7 +94,7 @@ process mapFastQ {
 	"""
 }
 
-// Indexation des .bam
+// Indexation des .bam obtenu
 process indexBamFiles {
 	publishDir 'results/bam_index'
 
@@ -108,7 +109,7 @@ process indexBamFiles {
 	"""
 }
 
-// Compte les reads
+// Attribution des reads aux gènes et comptage du nombre
 process countReads {
 	publishDir 'results/counts'
 
