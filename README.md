@@ -29,6 +29,7 @@ Conteneur pegi3s/sratoolkit : version 2.10.0
 - <a href= "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"> Package R DESeq2  </a> version 1.28.1
 - <a href= "http://factominer.free.fr/index_fr.html"> Package R FactoMineR </a> version 2.4
 - <a href= "https://cran.r-project.org/web/packages/factoextra/index.html"> Package R factoextra </a>version 1.0.7
+- <a href= "https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html"> Package R EnhancedVolcano </a>version 1.12.0
 
 
 ## Lancement du workflow
