@@ -10,25 +10,25 @@ portant sur des données RNA-seq d'individus avec cancers uvulaires, en regardan
 ![alt text](https://github.com/AnalystCat/reproHack/blob/main/flowchart.png?raw=true)
 ## Outils utilisés
 
-- Nextflow
+- <a href= "https://www.nextflow.io/"> Nextflow </a>
  Version 21.10.0.5640 
-- Docker
+- <a href= "https://www.docker.com/"> Docker</a>
   Version 20.10.11
-- Git
+- <a href= "https://git-scm.com/"> Git</a>
   Version 2.25.1 
-- SRA Toolkit
+- <a href= "https://hub.docker.com/r/pegi3s/sratoolkit"> SRA Toolkit</a>
 Conteneur pegi3s/sratoolkit : version 2.10.0
-- STAR
+-  <a href= "https://hub.docker.com/r/evolbioinfo/star:v2.7.6a"> STAR</a>
   Conteneur evolbioinfo/star:v2.7.6a : version 2.7.6a 
-- SAMtools
+- <a href= "https://hub.docker.com/r/evolbioinfo/samtools:v1.11"> SAMtools</a>
   Conteneur evolbioinfo/samtools:v1.11 : version 1.11
-- Subread
+- <a href= "https://hub.docker.com/r/evolbioinfo/subread:v2.0.1"> Subread</a>
   Conteneur evolbioinfo/subread:v2.0.1 : version 2.0.1
-- R
+- <a href= "https://hub.docker.com/r/evolbioinfo/deseq2:1.28.1"> R</a>
   Conteneur evolbioinfo/deseq2:1.28.1 : R version 4.0.2
-- Package R DESeq2 version 1.28.1
-- Package R FactoMineR version 2.4
-- Package R factoextra version 1.0.7
+- <a href= "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"> Package R DESeq2  </a> version 1.28.1
+- <a href= "http://factominer.free.fr/index_fr.html"> Package R FactoMineR </a> version 2.4
+- <a href= "https://cran.r-project.org/web/packages/factoextra/index.html"> Package R factoextra </a>version 1.0.7
 
 
 ## Lancement du workflow
