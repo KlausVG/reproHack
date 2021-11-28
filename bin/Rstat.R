@@ -1,20 +1,20 @@
 #!/usr/bin/Rscript --slave
 
 #we download the packages
-list.of.packages <- c("FactoMineR","factoextra","EnhancedVolcano")
+list.of.packages <- c("FactoMineR", "factoextra")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)){
-   install.packages(new.packages)
+    install.packages(new.packages)
 }
+if(!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("EnhancedVolcano")
 
 library(DESeq2)
 library(FactoMineR)
 library(factoextra)
 library(EnhancedVolcano)
-
-#Clean the workspace
-rm(list = ls())
-dev.off()
 
 args <- commandArgs(T)
 counts <- args[1]
@@ -36,7 +36,7 @@ genecount <- genecount[,-c(1,length(genecount)-1)]
 ###PCA
 
 #we run the PCA
-pdf("variabes.pdf")
+pdf("variables.pdf")
 resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = TRUE)
 dev.off()
 pdf("individuals.pdf")
