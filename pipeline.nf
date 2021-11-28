@@ -5,7 +5,7 @@ allLines = myFile.readLines()
 // Télécharge les fichiers fastq
 process downloadFastQ{
 	publishDir 'results/fastq'
-	
+
 	input:
 	val sraid from allLines
 
@@ -125,7 +125,7 @@ process countReads {
 	"""
 }
 /*
-// Lance l'analyse statistique R
+// Lance l'analyse statistique R et donne en sortie des csv de resultat et une acp et volcanoplot des genes differement exprimés
 process statAnalysis {
         publishDir 'results/analyseR'
 
