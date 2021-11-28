@@ -1,6 +1,6 @@
 # Rendu pour reproHackathon
 ## Membres du groupe
-- Klaus von Grafenstein (process downloadFastQ, downloadChr, donwloadGtf, écriture README)
+- Klaus von Grafenstein (process downloadFastQ, downloadChr, downloadGtf, écriture README)
 - Virginie Noël (process indexGenome, mapFastQ, indexBamFiles, countReads)
 - Arnaud Maupas (process statAnalysis et script R)
 ## Objectif du Hackathon
