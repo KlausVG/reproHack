@@ -14,9 +14,13 @@ library(EnhancedVolcano)
 rm(list = ls())
 dev.off()
 
+args <- commandArgs(T)
+counts <- args[1]
+typedata <- args[2]
+
 ###we construct a gene count table and a metadata table
-genecount <- read.table('output.counts', skip = 1, header =TRUE, sep ='\t')
-metadata <- read.table('typedata.csv', header =F, sep =';')
+genecount <- read.table(counts, skip = 1, header =TRUE, sep ='\t')
+metadata <- read.table(typedata, header =F, sep =';')
 names(metadata) <- c( "indiv","Group")
 metadata$indiv <- paste(metadata$indiv, "bam", sep = ".")
 rownames(genecount) <- genecount$Geneid
