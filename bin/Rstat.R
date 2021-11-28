@@ -1,3 +1,5 @@
+#!/usr/bin/Rscript --slave
+
 #we download the packages
 list.of.packages <- c("FactoMineR","factoextra","EnhancedVolcano")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
