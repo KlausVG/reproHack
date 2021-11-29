@@ -34,7 +34,7 @@ Conteneur pegi3s/sratoolkit : version 2.10.0
 
 ## Lancement du workflow
 Pour pouvoir lancer le workflow, assurez-vous que votre machine possède Nextflow et ait au minimum 16 coeurs, 64Go de mémoire vive et 400Go de stockage.
-Après avoir vérifié que votre environnement de travail est correcy, vous pouvez lancer le workflow en vous placant dans le dossier git et en faisant la commande :
+Après avoir vérifié que votre environnement de travail est correct, vous pouvez lancer le workflow en vous placant dans le dossier git et en faisant la commande :
 ``` 
 nextflow run pipeline.nf 
 ```
