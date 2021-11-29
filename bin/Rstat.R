@@ -60,7 +60,7 @@ write.csv(res1, "restot.csv")
 
 #we filter the results
 res <- subset(res1, res1$log2FoldChange > 1 | res1$log2FoldChange <(-1))
-res <- subset(res, res$padj < 0.1)
+res <- subset(res, res$padj < 0.05)
 res <- na.omit(res)
 write.csv(res, "res.csv")
 
