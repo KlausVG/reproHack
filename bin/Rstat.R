@@ -36,9 +36,7 @@ genecount <- genecount[,-c(1,length(genecount)-1)]
 ###PCA
 
 #we run the PCA
-png("variables.png")
-resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = TRUE)
-dev.off()
+resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = F)
 png("individuals.png")
 fviz_pca_ind (resPCA,label="none",habillage= as.factor(genecount$Group), addEllipses = T, pointsize=5) + theme( axis.title = element_text(size = 15),axis.text = element_text(size = 15))
 dev.off()
