@@ -137,8 +137,8 @@ process statAnalysis {
         file typedata from typedata
 
         output:
-        file "individuals.pdf" into individuals
-        file "volcanoplot.pdf" into volcanoplot
+        file "individuals.png" into individuals
+        file "volcanoplot.png" into volcanoplot
         file "restot.csv" into restot
         file "res.csv" into res
 
