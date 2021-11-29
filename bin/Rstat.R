@@ -36,10 +36,10 @@ genecount <- genecount[,-c(1,length(genecount)-1)]
 ###PCA
 
 #we run the PCA
-pdf("variables.pdf")
+png("variables.png")
 resPCA <- PCA(genecount[ , ! colnames(genecount) %in% c("Group")], scale.unit = TRUE, ncp = 5, graph = TRUE)
 dev.off()
-pdf("individuals.pdf")
+png("individuals.png")
 fviz_pca_ind (resPCA,label="none",habillage= as.factor(genecount$Group), addEllipses = T, pointsize=5) + theme( axis.title = element_text(size = 15),axis.text = element_text(size = 15))
 dev.off()
 
@@ -65,7 +65,7 @@ res <- na.omit(res)
 write.csv(res, "res.csv")
 
 #graphic representation
-pdf("volcanoplot.pdf")
+png("volcanoplot.png")
 EnhancedVolcano(result,lab = rownames(result),
                 x = 'log2FoldChange',
                 y = 'pvalue')
